@@ -5,9 +5,7 @@ import net.qiujuer.web.italker.push.bean.User;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-/**
- * @author qiujuer
- */
+
 // 127.0.0.1/api/account/...
 @Path("/account")
 public class AccountService {
