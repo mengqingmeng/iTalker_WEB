@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 public class Application extends ResourceConfig{
     public Application(){
         // 注册逻辑处理的包名
-        packages("net.qiujuer.web.italker.push.service");
+        packages("net.qiujuer.web.italker.push");
         //packages(AccountService.class.getPackage().getName());
 
         // 注册Json解析器
