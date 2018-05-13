@@ -6,21 +6,26 @@ import net.qiujuer.web.italker.push.bean.card.UserCard;
 import net.qiujuer.web.italker.push.bean.db.User;
 import net.qiujuer.web.italker.push.factory.UserFactory;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户信息处理的Service
- *
- * @author qiujuer Email:qiujuer@live.cn
- * @version 1.0.0
+
  */
 // 127.0.0.1/api/user/...
 @Path("/user")
 public class UserService extends BaseService {
+
+    @GET
+    @Path("/test")
+    public String test(){
+
+        return  "accuss to test";
+    }
+
 
     // 用户信息修改接口
     // 返回自己的个人信息
@@ -41,6 +46,26 @@ public class UserService extends BaseService {
         UserCard card = new UserCard(self, true);
         // 返回
         return ResponseModel.buildOk(card);
+    }
+
+
+    //拉取联系人
+    @GET
+    @Path("/contact")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResponseModel<List<UserCard>> contact(){
+        User self = getSelf();
+
+        //拿到我的联系人
+        List<User> users = UserFactory.contacts(self);
+
+        //转换为UserCard
+        List<UserCard> userCards = users.stream().map(user -> {
+            return new UserCard(user,true);
+        }).collect(Collectors.toList());
+
+        return ResponseModel.buildOk(userCards);
     }
 
 }

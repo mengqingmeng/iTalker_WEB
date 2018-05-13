@@ -55,7 +55,6 @@ public class Message {
     //接收消息者
     @ManyToOne
     @JoinColumn(name = "receiverId")
-    @Column(updatable = false,insertable = false)
     private User receiver;
 
     @Column(updatable = false,insertable = false)
@@ -64,8 +63,9 @@ public class Message {
     //群,一个群可以接受多个消息
     @ManyToOne
     @JoinColumn(name = "groupId")
-    @Column(updatable = false,insertable = false)
     private Group group;
+
+    @Column(updatable = false,insertable = false)
     private String groupId;
 
     public String getId() {
