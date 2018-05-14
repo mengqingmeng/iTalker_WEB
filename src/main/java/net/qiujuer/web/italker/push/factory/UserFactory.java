@@ -6,12 +6,20 @@ import net.qiujuer.web.italker.push.bean.db.UserFollow;
 import net.qiujuer.web.italker.push.utils.Hib;
 import net.qiujuer.web.italker.push.utils.TextUtil;
 
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
+
 public class UserFactory {
+    @Context
+    private static ContainerRequestContext requestContext;
+
     // 通过Token字段查询用户信息
     // 只能自己使用，查询的信息是个人信息，非他人信息
     public static User findByToken(String token) {
@@ -35,6 +43,11 @@ public class UserFactory {
                 .createQuery("from User where name=:name")
                 .setParameter("name", name)
                 .uniqueResult());
+    }
+
+    // 通过Id找到User
+    public static User findById(String id) {
+        return Hib.query(session -> session.get(User.class,id));
     }
 
     /**
@@ -118,8 +131,6 @@ public class UserFactory {
             user = login(user);
         }
         return user;
-
-
     }
 
 
@@ -182,7 +193,7 @@ public class UserFactory {
         // 进行一次Base64格式化
         newToken = TextUtil.encodeBase64(newToken);
         user.setToken(newToken);
-
+        //requestContext.getHeaders().addFirst("token",newToken);
         return update(user);
     }
 
@@ -222,4 +233,65 @@ public class UserFactory {
         });
     }
 
+    /**
+     * 关注联系人
+     * @param origin    关注者
+     * @param target    被关注着
+     * @param alias     备注
+     * @return  被关注人的信息
+     */
+     public static User follow(final User origin,final User target,final String alias){
+         UserFollow userFollow = getUserFollow(origin,target);
+         if(userFollow!=null){
+            return  userFollow.getTarget();
+         }
+
+         return Hib.query(session -> {
+             //想要操作懒加载的数据，需要重新load一次
+            session.load(origin,origin.getId());
+            session.load(target,target.getId());
+
+            //我关注的人，同时也关注我
+             UserFollow originFollow = new UserFollow();
+             originFollow.setOrigin(origin);
+             originFollow.setTarget(target);
+             originFollow.setAlias(alias);
+
+             UserFollow targetFollow = new UserFollow();
+             targetFollow.setTarget(origin);
+             targetFollow.setOrigin(target);
+
+             session.save(originFollow);
+             session.save(targetFollow);
+
+             return target;
+         });
+     }
+
+    /**
+     * 查询两人是否已经关注了
+     * @param origin    关注人
+     * @param target    被关注人
+     * @return 中间表 UserFollow
+     */
+     public static UserFollow getUserFollow(final User origin,final User target){
+         return Hib.query(session -> {
+            return (UserFollow)session.createQuery("from UserFollow where originId=:originId and targetId=:targetId")
+                    .setParameter("originId",origin.getId())
+                    .setParameter("targetId",target.getId())
+                    .setMaxResults(1)
+                    .uniqueResult();
+         });
+     }
+
+    public static List<User> search(String name) {
+         name = Strings.isNullOrEmpty(name) ? "":name;
+         final String searchName = "%" + name + "%";
+         return Hib.query(session -> {
+            return (List<User>) session.createQuery("from User where lower(name) like :name ")
+                     .setParameter("name",searchName)
+                     .setMaxResults(20)
+                     .list();
+         });
+    }
 }

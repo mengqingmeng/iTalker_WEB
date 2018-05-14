@@ -9,6 +9,8 @@ import net.qiujuer.web.italker.push.bean.db.User;
 import net.qiujuer.web.italker.push.factory.UserFactory;
 
 import javax.ws.rs.*;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 
@@ -18,6 +20,7 @@ import javax.ws.rs.core.MediaType;
 @Consumes(MediaType.APPLICATION_JSON)   //指定接收的类型
 @Produces(MediaType.APPLICATION_JSON)   //指定返回的类型
 public class AccountService extends BaseService {
+
     // 登录
     @POST
     @Path("/login")
@@ -28,8 +31,6 @@ public class AccountService extends BaseService {
             // 返回参数异常
             return ResponseModel.buildParameterError();
         }
-
-
         User user = UserFactory.login(model.getAccount(), model.getPassword());
         if (user != null) {
 
@@ -40,6 +41,8 @@ public class AccountService extends BaseService {
 
             // 返回当前的账户
             AccountRspModel rspModel = new AccountRspModel(user);
+
+
             return ResponseModel.buildOk(rspModel);
         } else {
             // 登录失败
