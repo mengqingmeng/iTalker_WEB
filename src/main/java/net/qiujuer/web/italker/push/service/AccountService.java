@@ -14,13 +14,15 @@ import javax.ws.rs.core.MediaType;
 
 // 127.0.0.1/api/account/...
 @Path("/account")
+// 指定请求与返回的相应体为JSON
+@Consumes(MediaType.APPLICATION_JSON)   //指定接收的类型
+@Produces(MediaType.APPLICATION_JSON)   //指定返回的类型
 public class AccountService extends BaseService {
     // 登录
     @POST
     @Path("/login")
     // 指定请求与返回的相应体为JSON
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
+
     public ResponseModel<AccountRspModel> login(LoginModel model) {
         if (!LoginModel.check(model)) {
             // 返回参数异常
@@ -49,9 +51,6 @@ public class AccountService extends BaseService {
     // 注册
     @POST
     @Path("/register")
-    // 指定请求与返回的相应体为JSON
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public ResponseModel<AccountRspModel> register(RegisterModel model) {
         if (!RegisterModel.check(model)) {
             // 返回参数异常
@@ -95,9 +94,6 @@ public class AccountService extends BaseService {
     // 绑定设备Id
     @POST
     @Path("/bind/{pushId}")
-    // 指定请求与返回的相应体为JSON
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     // 从请求头中获取token字段
     // pushId从url地址中获取
     public ResponseModel<AccountRspModel> bind(@HeaderParam("token") String token,
