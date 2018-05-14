@@ -11,9 +11,7 @@ import net.qiujuer.web.italker.push.factory.UserFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-/**
- * @author qiujuer
- */
+
 // 127.0.0.1/api/account/...
 @Path("/account")
 public class AccountService extends BaseService {
