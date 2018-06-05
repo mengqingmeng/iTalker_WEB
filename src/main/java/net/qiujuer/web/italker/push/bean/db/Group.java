@@ -25,6 +25,7 @@ public class Group {
     @Column(nullable = false)
     private String description;
 
+    //群图片
     @Column(nullable = false)
     private String picture;
 
@@ -38,7 +39,7 @@ public class Group {
     @Column(nullable = false)
     private LocalDateTime updateAt = LocalDateTime.now();
 
-    //群的创建者
+    //群主
     //optional=false:必须有
     //fetch = FetchType.EAGER：加载群信息时，必须加载创建者信息
     //cascade = CascadeType.ALL:所有的更改，都进行更新

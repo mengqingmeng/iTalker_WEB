@@ -50,6 +50,7 @@ public class User  implements Principal {
     private String token;
 
     //用于推送的id
+    @Column
     private String pushId;
 
     //定义为创建时间戳，创建时自动写入

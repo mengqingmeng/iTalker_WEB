@@ -26,6 +26,7 @@ public class UserFollow {
     @ManyToOne(optional = false)
     @JoinColumn(name = "originId")
     private User origin;
+
     @Column(updatable = false,insertable = false)
     private String originId;
 
@@ -33,8 +34,10 @@ public class UserFollow {
     @ManyToOne(optional = false)
     @JoinColumn(name = "targetId")
     private User target;
+
     @Column(updatable = false,insertable = false)
     private String targetId;
+
     //别名
     private String alias;
 

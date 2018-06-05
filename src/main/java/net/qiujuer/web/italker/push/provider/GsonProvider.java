@@ -45,8 +45,10 @@ public class GsonProvider<T> implements MessageBodyReader<T>, MessageBodyWriter<
                 .excludeFieldsWithoutExposeAnnotation()
                 // 支持Map
                 .enableComplexMapKeySerialization();
+
         // 添加对Java8LocalDateTime时间类型的支持
         builder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeConverter());
+
         gson = builder.create();
     }
 
