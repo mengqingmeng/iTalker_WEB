@@ -116,7 +116,6 @@ public class AccountService extends BaseService {
 
     /**
      * 绑定的操作
-     *
      * @param self   自己
      * @param pushId PushId
      * @return User

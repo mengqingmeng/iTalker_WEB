@@ -28,7 +28,7 @@ public class UserService extends BaseService {
     @GET
     @Path("/test")
     public String test(){
-        return  "accuss to test";
+            return  "access to test";
     }
 
 
@@ -85,19 +85,20 @@ public class UserService extends BaseService {
             return ResponseModel.buildParameterError();
         }
 
+        //被关注人
         User followUser =  UserFactory.findById(followId);
         if(followUser == null){
             return ResponseModel.buildNotFoundUserError(null);
         }
 
+        //关注
         followUser = UserFactory.follow(user,followUser,null);
         if(followUser == null){
             return ResponseModel.buildServiceError();
         }
 
         /*
-         *  TODO: 2018/5/14
-         *  通知我的关注的人我关注了ta
+         *  TODO: 2018/5/14 通知我的关注的人我关注了ta
          */
         
         return ResponseModel.buildOk(new UserCard(followUser,true));
@@ -131,7 +132,7 @@ public class UserService extends BaseService {
 
 
     /**
-     * 搜索联系人
+     * 搜索用户，并非仅仅搜索联系人，还有未关注的人
      * @param name  用户名
      * @return  List<UserCard>
      *     http://127.0.0.1:8080/api/user/search/{name}

@@ -215,7 +215,7 @@ public class UserFactory {
 
     /**
      * 获取我的联系人的列表
-     * @param self User
+     * @param self User self
      * @return  List<User>
      */
     public static List<User> contacts(User self){
@@ -227,6 +227,7 @@ public class UserFactory {
             //获取我关注的人
             Set<UserFollow> follows = self.getFollowing();
 
+            //转换为我关注的人的用户list
             return follows.stream().map(follow->{
                 return follow.getTarget();
             }).collect(Collectors.toList());
@@ -242,6 +243,8 @@ public class UserFactory {
      */
      public static User follow(final User origin,final User target,final String alias){
          UserFollow userFollow = getUserFollow(origin,target);
+
+         //已经关注了
          if(userFollow!=null){
             return  userFollow.getTarget();
          }
