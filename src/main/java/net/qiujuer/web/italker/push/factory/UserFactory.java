@@ -132,7 +132,7 @@ public class UserFactory {
         // 把原文进行同样的处理，然后才能匹配
         final String encodePassword = encodePassword(password);
 
-        // 寻找
+        // 寻找用户
         User user = Hib.query(session -> (User) session
                 .createQuery("from User where phone=:phone and password=:password")
                 .setParameter("phone", accountStr)

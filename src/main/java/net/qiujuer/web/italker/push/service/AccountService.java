@@ -25,7 +25,6 @@ public class AccountService extends BaseService {
     @POST
     @Path("/login")
     // 指定请求与返回的相应体为JSON
-
     public ResponseModel<AccountRspModel> login(LoginModel model) {
         if (!LoginModel.check(model)) {
             // 返回参数异常
@@ -101,7 +100,7 @@ public class AccountService extends BaseService {
     // pushId从url地址中获取
     public ResponseModel<AccountRspModel> bind(@HeaderParam("token") String token,
                                                @PathParam("pushId") String pushId) {
-        if (Strings.isNullOrEmpty(token) ||
+            if (Strings.isNullOrEmpty(token) ||
                 Strings.isNullOrEmpty(pushId)) {
             // 返回参数异常
             return ResponseModel.buildParameterError();
