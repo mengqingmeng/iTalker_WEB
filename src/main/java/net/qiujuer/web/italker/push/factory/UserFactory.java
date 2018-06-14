@@ -5,6 +5,7 @@ import net.qiujuer.web.italker.push.bean.db.User;
 import net.qiujuer.web.italker.push.bean.db.UserFollow;
 import net.qiujuer.web.italker.push.utils.Hib;
 import net.qiujuer.web.italker.push.utils.TextUtil;
+import org.hibernate.Session;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
@@ -31,6 +32,18 @@ public class UserFactory {
 
     // 通过Phone找到User
     public static User findByPhone(String phone) {
+
+//        return Hib.query(new Hib.Query<User>() {
+//            @Override
+//            public User query(Session session) {
+//
+//                return (User)session.createQuery("from User where phone=:phone")
+//                        .setParameter("phone",phone)
+//                        .uniqueResult();
+//            }
+//        });
+
+        //下面是简化版本
         return Hib.query(session -> (User) session
                 .createQuery("from User where phone=:inPhone")
                 .setParameter("inPhone", phone)
